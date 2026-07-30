@@ -8,26 +8,30 @@ Documentation that looks correct on the page doesn't always hold up when you act
 
 ## Scope
 
-| Tutorial | Doc source | Status |
-|---|---|---|
-| [Getting Started with Chainlink VRF v2.5](https://docs.chain.link/vrf/v2-5/getting-started) | [smartcontractkit/documentation](https://github.com/smartcontractkit/documentation) | In progress |
+| Tutorial                                                                                    | Doc source                                                                          | Status    |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | --------- |
+| [Getting Started with Chainlink VRF v2.5](https://docs.chain.link/vrf/v2-5/getting-started) | [smartcontractkit/documentation](https://github.com/smartcontractkit/documentation) | Completed |
 
 More tutorials may be added over time.
 
-## How to read the logs
+## Highlights
 
-Each tutorial has its own validation log (e.g. `VRF_Tutorial_Validation_Log.md`) with:
-- **Environment Setup** — network, wallet, subscription details used for the run
-- **Step-by-Step Log** — what the doc instructs vs. what actually happened at each step, with timestamps
-- **Findings Summary** — a table of anything that didn't match: broken links, stale addresses, version mismatches, missing instructions, or UI drift
-- **Follow-Up Actions** — links to any issues or PRs opened against Chainlink's documentation repo as a result
+Validating the VRF v2.5 Getting Started guide surfaced a real, reproducible gap: Chainlink's own testnet faucet silently blocks the ETH drip for users with no LINK held on Ethereum Mainnet, with no warning in the tutorial or on the faucet page. Filed as [smartcontractkit/documentation#4011](https://github.com/smartcontractkit/documentation/issues/4011). Full evidence in [`FINDINGS.md`](FINDINGS.md).
+
+## How to read this repo
+
+- **[`FINDINGS.md`](FINDINGS.md)** — the master tracker. Every documentation gap, inaccuracy, or issue found across all tutorials, in one table, regardless of which tutorial it came from.
+- **`logs/`** — one file per tutorial, containing the environment setup and step-by-step walkthrough (what the doc says vs. what actually happened, with timestamps). Each step links to a Finding ID in `FINDINGS.md` if it produced one.
+
+Example: `logs/VRF_v2-5_Getting_Started.md` documents the full run of the [VRF v2.5 Getting Started guide](https://docs.chain.link/vrf/v2-5/getting-started); any issues it turned up are recorded as F001, F002, etc. in `FINDINGS.md`.
 
 ## Contributing findings upstream
 
-Where a genuine gap or inaccuracy is found, it's reported or fixed directly against Chainlink's own docs repository, following their [Contributing guide](https://github.com/smartcontractkit/documentation/blob/main/CONTRIBUTING.md), rather than just noted here. Links to any resulting issues/PRs are included in the relevant log's Follow-Up Actions section.
+Where a genuine gap or inaccuracy is found, it's reported or fixed directly against Chainlink's own docs repository, following their [Contributing guide](https://github.com/smartcontractkit/documentation/blob/main/CONTRIBUTING.md), rather than just noted here. Links to any resulting issues/PRs are tracked in the **Upstream link** column of [`FINDINGS.md`](FINDINGS.md).
 
 ## About
 
 Maintained by Harsha Siriki as part of hands-on Web3 documentation practice.
+
 - [GitHub](https://github.com/HarshaSiriki)
 - [Medium](https://medium.com/@harsha.siriki)
