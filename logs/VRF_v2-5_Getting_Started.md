@@ -28,7 +28,7 @@
 | Wallet address used                     | `0xfA498F339d311f5b6f8A79c5459F8dE2BABd36e5`                                                                                                                          |
 | Testnet ETH source                      | faucets.chain.link/base-sepolia — ❌ Failed (blocked by mainnet LINK requirement, see F002). ✅ Obtained instead via Coinbase Developer Platform Faucet (0.0001 ETH). |
 | Testnet LINK source                     | faucets.chain.link/base-sepolia — ✅ Success, 25 LINK. [Tx](https://sepolia.basescan.org/tx/0xc2a42fb4d5fb2a7a474421a2a5d6e2b29e864277c6073eb1f9a52919d2a075c0)       |
-| Subscription ID created                 | — (pending: need ETH for gas first)                                                                                                                                   |
+| Subscription ID created                 | `24963885066942085575241868055782773595381668348941839345025195320832983598589` (not yet funded)                                                                      |
 | Solidity compiler version used in Remix | — (not yet reached)                                                                                                                                                   |
 
 ---
@@ -40,8 +40,8 @@ For each step: record what the doc says, what you actually did, and the result. 
 ### Step 1 — Create and fund a subscription
 
 - **Doc says:** Fund your wallet with testnet ETH and LINK via faucets.chain.link, then create/fund a subscription.
-- **What I did:** Requested Base Sepolia ETH + LINK drip from faucets.chain.link/base-sepolia. LINK succeeded; ETH failed (see F002). Obtained 0.0001 Base Sepolia ETH via the Coinbase Developer Platform Faucet as a workaround.
-- **Result:** ⚠️ Partial mismatch, now resolved via workaround — LINK drip succeeded (25 testnet LINK, [tx](https://sepolia.basescan.org/tx/0xc2a42fb4d5fb2a7a474421a2a5d6e2b29e864277c6073eb1f9a52919d2a075c0)). ETH drip **failed** on Chainlink's faucet: "You must hold at least 1 LINK on Ethereum Mainnet to request native tokens." Unblocked via Coinbase Developer Platform Faucet: 0.0001 ETH received, confirmed Success ([tx](https://sepolia.basescan.org/tx/0x847c5e1e103cd1fb16d033d7bb88ce3939a81dc40d086a62a599970f25a1bcb8)).
+- **What I did:** Requested Base Sepolia ETH + LINK drip from faucets.chain.link/base-sepolia. LINK succeeded; ETH failed (see F002). Obtained 0.0001 Base Sepolia ETH via the Coinbase Developer Platform Faucet as a workaround. Created a VRF subscription via vrf.chain.link (Base Sepolia).
+- **Result:** ⚠️ Partial mismatch, now resolved via workaround — LINK drip succeeded (25 testnet LINK, [tx](https://sepolia.basescan.org/tx/0xc2a42fb4d5fb2a7a474421a2a5d6e2b29e864277c6073eb1f9a52919d2a075c0)). ETH drip **failed** on Chainlink's faucet: "You must hold at least 1 LINK on Ethereum Mainnet to request native tokens." Unblocked via Coinbase Developer Platform Faucet: 0.0001 ETH received, confirmed Success ([tx](https://sepolia.basescan.org/tx/0x847c5e1e103cd1fb16d033d7bb88ce3939a81dc40d086a62a599970f25a1bcb8)). Subscription created successfully: `24963885066942085575241868055782773595381668348941839345025195320832983598589`. **Not yet funded with LINK** — pending.
 - **Finding ID (if any):** F002
 - **Timestamp:** 2026-07-30 02:19:40 UTC (CDP faucet ETH claim, confirmed on-chain)
 
@@ -55,11 +55,18 @@ For each step: record what the doc says, what you actually did, and the result. 
 
 ### Step 3 — Deploy with subscription ID
 
-- **Doc says:**
-- **What I did:**
-- **Result:**
-- **Finding ID (if any):**
-- **Timestamp:**
+- **Doc says:** Compile VRFD20.sol, deploy passing your subscription ID to the constructor.
+- **What I did:** Edited `vrfCoordinator` and `s_keyHash` to Base Sepolia values (`0x5C210eF41CD1a72de73bF76eC39637bB0d3d7BEE` / `0x9e1344a1247c8a1785d0a4681a27152bffdb43666ae5bf7d14d24a5efd44bf71`) before compiling. Compiled successfully. Deployed via Remix, Browser Extension environment, Base Sepolia (chain 84532), passing subscription ID `24963885066942085575241868055782773595381668348941839345025195320832983598589` to the constructor.
+- **Result:** ✅ Success — "1 Transaction mined and execution completed."
+  - Tx hash: `0xf7cadd7f2a005988bfbbb8c7e7565138f9a101bc38270c60ef5be51ae40fb9c8`
+  - Contract address: `0xAc2ecDcCcEC23859F9b3f622063e44873c0173f4`
+  - Block: 44807518
+  - Gas used: 1,788,507
+  - Deployer: `0xfA498F339d311f5b6f8A79c5459F8dE2BABd36e5`
+  - Decoded constructor input confirmed correct subscription ID passed
+  - Note: this consumed a meaningful portion of the 0.0001 ETH balance — worth tracking remaining balance before attempting `rollDice`
+- **Finding ID (if any):** None — deploy worked cleanly once the network-specific values were corrected per F001/doc guidance.
+- **Timestamp:** Jul-29-2026 11:35:30 PM UTC-04
 
 ### Step 4 — Add deployed contract as approved consumer
 
