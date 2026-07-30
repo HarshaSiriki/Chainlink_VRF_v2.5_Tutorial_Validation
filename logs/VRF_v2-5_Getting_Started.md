@@ -1,11 +1,11 @@
 # Chainlink VRF v2.5 "Getting Started" — Tutorial Validation Log
 
 **Tester:** Harsha Siriki
-**Date started:** [YYYY-MM-DD]
+**Date started:** [2026-07-29]
 **Doc page under test:** https://docs.chain.link/vrf/v2-5/getting-started
 **Doc source file:** src/content/vrf/v2-5/getting-started.mdx (smartcontractkit/documentation)
 **Network:** Base Sepolia Testnet
-**Environment:** Remix IDE / MetaMask / [Hardhat, if used]
+**Environment:** Remix IDE / MetaMask
 
 **Reference values for Base Sepolia (from docs.chain.link/vrf/v2-5/supported-networks):**
 
@@ -23,13 +23,13 @@
 
 ## Environment Setup
 
-| Item                                    | Value / Status                                                                                                                                                  |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Wallet address used                     | `0xfA498F339d311f5b6f8A79c5459F8dE2BABd36e5`                                                                                                                    |
-| Testnet ETH source                      | faucets.chain.link/base-sepolia — ❌ Failed (blocked by mainnet LINK requirement, see F002). Retry pending via alternate faucet.                                |
-| Testnet LINK source                     | faucets.chain.link/base-sepolia — ✅ Success, 25 LINK. [Tx](https://sepolia.basescan.org/tx/0xc2a42fb4d5fb2a7a474421a2a5d6e2b29e864277c6073eb1f9a52919d2a075c0) |
-| Subscription ID created                 | — (pending: need ETH for gas first)                                                                                                                             |
-| Solidity compiler version used in Remix | — (not yet reached)                                                                                                                                             |
+| Item                                    | Value / Status                                                                                                                                                        |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wallet address used                     | `0xfA498F339d311f5b6f8A79c5459F8dE2BABd36e5`                                                                                                                          |
+| Testnet ETH source                      | faucets.chain.link/base-sepolia — ❌ Failed (blocked by mainnet LINK requirement, see F002). ✅ Obtained instead via Coinbase Developer Platform Faucet (0.0001 ETH). |
+| Testnet LINK source                     | faucets.chain.link/base-sepolia — ✅ Success, 25 LINK. [Tx](https://sepolia.basescan.org/tx/0xc2a42fb4d5fb2a7a474421a2a5d6e2b29e864277c6073eb1f9a52919d2a075c0)       |
+| Subscription ID created                 | — (pending: need ETH for gas first)                                                                                                                                   |
+| Solidity compiler version used in Remix | — (not yet reached)                                                                                                                                                   |
 
 ---
 
@@ -40,10 +40,10 @@ For each step: record what the doc says, what you actually did, and the result. 
 ### Step 1 — Create and fund a subscription
 
 - **Doc says:** Fund your wallet with testnet ETH and LINK via faucets.chain.link, then create/fund a subscription.
-- **What I did:** Requested Base Sepolia ETH + LINK drip from faucets.chain.link/base-sepolia.
-- **Result:** ⚠️ Partial mismatch — LINK drip succeeded (25 testnet LINK, tx 0xc2a4...75c0). ETH drip **failed**: "You must hold at least 1 LINK on Ethereum Mainnet to request native tokens."
+- **What I did:** Requested Base Sepolia ETH + LINK drip from faucets.chain.link/base-sepolia. LINK succeeded; ETH failed (see F002). Obtained 0.0001 Base Sepolia ETH via the Coinbase Developer Platform Faucet as a workaround.
+- **Result:** ⚠️ Partial mismatch, now resolved via workaround — LINK drip succeeded (25 testnet LINK, [tx](https://sepolia.basescan.org/tx/0xc2a42fb4d5fb2a7a474421a2a5d6e2b29e864277c6073eb1f9a52919d2a075c0)). ETH drip **failed** on Chainlink's faucet: "You must hold at least 1 LINK on Ethereum Mainnet to request native tokens." Unblocked via Coinbase Developer Platform Faucet: 0.0001 ETH received, confirmed Success ([tx](https://sepolia.basescan.org/tx/0x847c5e1e103cd1fb16d033d7bb88ce3939a81dc40d086a62a599970f25a1bcb8)).
 - **Finding ID (if any):** F002
-- **Timestamp:** [Jul-29-2026 09:29:22 PM UTC-04]
+- **Timestamp:** 2026-07-30 02:19:40 UTC (CDP faucet ETH claim, confirmed on-chain)
 
 ### Step 2 — Open VRFD20.sol in Remix
 
@@ -89,4 +89,5 @@ For each step: record what the doc says, what you actually did, and the result. 
 
 ## Appendix
 
-(Screenshots, full error text, transaction hashes, block explorer links)
+![Faucet drip results — ETH failed, LINK succeeded](../screenshots/vrf-v2-5-getting-started/F002-faucet-drip-results.png)
+\*Screenshot from Step 1: Base Sepolia ETH drip failed (mainnet LINK requirement, see F002); LINK drip succeeded (25 LINK, [tx](https://sepolia.basescan.org/tx/0xc2a42fb4d5fb2a7a474421a2a5d6e2b29e864277c6073eb1f9a52919d2a075c0)).
