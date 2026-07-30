@@ -47,10 +47,10 @@ For each step: record what the doc says, what you actually did, and the result. 
 
 ### Step 2 — Open VRFD20.sol in Remix
 
-- **Doc says:**
-- **What I did:**
-- **Result:**
-- **Finding ID (if any):**
+- **Doc says:** Open the contract via the provided Remix link; code should compile as-is for Sepolia.
+- **What I did:** Opened VRFD20.sol, reviewed the full source. Verified `@chainlink/contracts@1.5.0` import pin against npm/GitHub — confirmed current (latest published version, and the exact version pinned in the docs repo's own version-overrides.json for tutorial samples).
+- **Result:** ✅ Import/version pin matched doc and current registry — no drift found. ⚠️ Contract ships with Ethereum Sepolia's `vrfCoordinator` and `s_keyHash` hardcoded, requiring manual edit to Base Sepolia values before compiling (expected per doc's own comment/guidance, not a bug — but a real trap for a first-time reader deploying to a non-Sepolia network, since the constructor bakes `vrfCoordinator` in at compile time).
+- **Finding ID (if any):** None — verified clean on both counts.
 - **Timestamp:**
 
 ### Step 3 — Deploy with subscription ID
