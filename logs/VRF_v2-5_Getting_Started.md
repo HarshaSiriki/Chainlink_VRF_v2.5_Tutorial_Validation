@@ -70,27 +70,40 @@ For each step: record what the doc says, what you actually did, and the result. 
 
 ### Step 4 — Add deployed contract as approved consumer
 
-- **Doc says:**
-- **What I did:**
-- **Result:**
-- **Finding ID (if any):**
+- **Doc says:** In the Subscription Manager, add the deployed contract address as an approved consumer; fund the subscription.
+- **What I did:** Funded subscription `24963...598589` with testnet LINK via vrf.chain.link. Added `0xAc2ecDcCcEC23859F9b3f622063e44873c0173f4` as an approved consumer.
+- **Result:** ✅ Success — confirmed indirectly: the subsequent `rollDice` call (Step 5) no longer reverted at gas estimation, which had failed specifically due to missing consumer registration / subscription funding. No standalone tx hash captured for this step in isolation.
+- **Finding ID (if any):** F003 — see FINDINGS.md. Getting Started does flag funding upfront via its section heading, but defers the actual funding steps to a separate page whose internal ordering (Add Consumer before Fund) doesn't match the order a Getting Started reader actually needs.
 - **Timestamp:**
 
 ### Step 5 — Call `rollDice`
 
-- **Doc says:**
-- **What I did:**
-- **Result:** (transaction hash, gas used, any revert reason)
-- **Finding ID (if any):**
-- **Timestamp:**
+- **Doc says:** Call `rollDice(address)` with your wallet address; this submits a VRF request.
+- **What I did:** Retried `rollDice` in Remix after completing Step 4.
+- **Result:** ✅ Success — "1 Transaction mined and execution completed."
+  - Tx hash: `0x988f32bae63b4c9a9518ecca40582170cd8513a1ab7daebbba7ef95aec2fc2d3`
+  - Block: 44832807, gas used: 240,025
+  - Log from VRF Coordinator (`0x5C210eF4...d7BEE`) containing this session's keyHash and contract address — consistent with `RandomWordsRequested`
+  - Log from the deployed contract (`0xAc2ecDcCcEC...c0173f4`) containing the wallet address — consistent with `DiceRolled`
+  - **Environment note (not a Chainlink docs finding):** `from` on this tx was `0xC066ac5D...37a8B8c`, not the tracked wallet directly — the transaction appears to have been routed through a MetaMask smart-account relay/batch (`to: 0xdb9B1e94...47dB3`), bundling the call rather than sending it as a plain 1:1 EOA transaction. This is a MetaMask account-abstraction behavior unrelated to the tutorial content itself, but worth knowing if reading raw transaction data and expecting a direct sender match.
+- **Finding ID (if any):** None.
+- **Timestamp:** Jul 30 2026 13:51:42 (-04:00 UTC)
 
 ### Step 6 — Call `house`
 
-- **Doc says:**
-- **What I did:**
-- **Result:**
-- **Finding ID (if any):**
+- **Doc says:** Call `house(address)` to retrieve the assigned house once the random roll has been fulfilled.
+- **What I did:** Called `house(0xfA498F339d311f5b6f8A79c5459F8dE2BABd36e5)` in Remix.
+- **Result:** ✅ Success — returned `"Targaryen"` (no revert). Confirms `fulfillRandomWords` had already been called by the VRF Coordinator by the time this was checked, completing the full request → fulfillment → read cycle.
+- **Finding ID (if any):** None.
 - **Timestamp:**
+
+---
+
+## Run Summary
+
+**Outcome:** The VRF v2.5 Getting Started tutorial was successfully reproduced end to end on Base Sepolia: subscription created and funded, contract deployed with corrected network-specific values, consumer registered, rollDice requested, and house returned a valid result (Targaryen) after fulfillment.
+
+**Findings produced:** 2 open (F002 — undocumented mainnet-LINK requirement on Chainlink's own faucet; F003 — minor ordering mismatch and missing screenshots on the linked subscription-management page), 1 retracted on verification (F001). Note: F003 was itself revised after an initial overstatement was caught and corrected — see FINDINGS.md.
 
 ---
 
